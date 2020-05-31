@@ -3249,7 +3249,8 @@ In this lab, you have accomplished the following activities.
 
 - [https://github.com/openshift/installer/blob/master/docs/user/metal/install_ipi.md](https://github.com/openshift/installer/blob/master/docs/user/metal/install_ipi.md)
 - [https://openshift-kni.github.io/baremetal-deploy](https://openshift-kni.github.io/baremetal-deploy)
--
+
+
 ## Cleaning the lab
 
 ```

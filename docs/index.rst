@@ -3342,8 +3342,9 @@ Documentation
 
 -  https://github.com/openshift/installer/blob/master/docs/user/metal/install_ipi.md
 -  https://openshift-kni.github.io/baremetal-deploy
--  .. rubric:: Cleaning the lab
-      :name: cleaning-the-lab
+
+Cleaning the lab
+----------------
 
 ::
 
