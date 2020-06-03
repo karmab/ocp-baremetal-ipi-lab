@@ -46,19 +46,6 @@ HOMEDIR=/home
 ME=$(id -nu) ; sudo sh -c "cat $HOME/$ME/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
 ```
 
-## Configure required lab bridges
-
-**NOTE:** The following steps need to be run directly on the hypervisor
-
-```
-sudo sh -c 'echo -e "DEVICE=lab-baremetal\nTYPE=Bridge\nONBOOT=yes\nNM_CONTROLLED=no" > /etc/sysconfig/network-scripts/ifcfg-lab-baremetal'
-sudo nmcli connection add ifname lab-prov type bridge con-name lab-prov
-```
-
-**NOTE:** We would add physical nics to both bridges to provide access to a real external network and enable provisioning on a dedicated physical network.
-
-**NOTE:** This will only create the lab-prov bridge, lab-baremetal brodge will get fully prepared in the next step.
-
 ## Deploy The lab plan
 
 - Launch the following command:
@@ -3255,6 +3242,4 @@ In this lab, you have accomplished the following activities.
 
 ```
 kcli delete plan --yes lab
-sudo rm -rf /etc/sysconfig/network-scripts/ifcfg-lab-baremetal
-sudo nmcli conn delete lab-prov
 ```
