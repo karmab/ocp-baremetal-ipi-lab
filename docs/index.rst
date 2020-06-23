@@ -66,23 +66,6 @@ using the following:
     HOMEDIR=/home
     ME=$(id -nu) ; sudo sh -c "cat $HOME/$ME/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
 
-Configure required lab bridges
-------------------------------
-
-**NOTE:** The following steps need to be run directly on the hypervisor
-
-::
-
-    sudo sh -c 'echo -e "DEVICE=lab-baremetal\nTYPE=Bridge\nONBOOT=yes\nNM_CONTROLLED=no" > /etc/sysconfig/network-scripts/ifcfg-lab-baremetal'
-    sudo nmcli connection add ifname lab-prov type bridge con-name lab-prov
-
-**NOTE:** We would add physical nics to both bridges to provide access
-to a real external network and enable provisioning on a dedicated
-physical network.
-
-**NOTE:** This will only create the lab-prov bridge, lab-baremetal
-brodge will get fully prepared in the next step.
-
 Deploy The lab plan
 -------------------
 
@@ -3126,7 +3109,7 @@ Expected Output
     time="2020-05-12T10:10:10Z" level=debug msg="Apply complete! Resources: 12 added, 0 changed, 0 destroyed."
     time="2020-05-12T10:10:10Z" level=debug msg="OpenShift Installer 4.5.0-0.nightly-2020-05-12-065413"
     time="2020-05-12T10:10:10Z" level=debug msg="Built from commit e476c483ed99c9cf2982529178e668dbcaf3ed5e"
-    time="2020-05-12T10:10:10Z" level=info msg="Waiting up to 20m0s for the Kubernetes API at https://api.lab.cnftigerteam.com:6443..."
+    time="2020-05-12T10:10:10Z" level=info msg="Waiting up to 20m0s for the Kubernetes API at https://api.lab.karmalabs.com:6443..."
     time="2020-05-12T10:10:10Z" level=info msg="API v1.18.2 up"
     time="2020-05-12T10:10:10Z" level=info msg="Waiting up to 40m0s for bootstrapping to complete..."
     time="2020-05-12T10:17:24Z" level=debug msg="Bootstrap status: complete"
@@ -3208,7 +3191,7 @@ Expected Output
     time="2020-05-12T10:17:32Z" level=debug msg="  Loading Platform..."
     time="2020-05-12T10:17:32Z" level=debug msg="Using Install Config loaded from state file"
     time="2020-05-12T10:17:32Z" level=debug msg="Reusing previously-fetched Install Config"
-    time="2020-05-12T10:17:32Z" level=info msg="Waiting up to 1h0m0s for the cluster at https://api.lab.cnftigerteam.com:6443 to initialize..."
+    time="2020-05-12T10:17:32Z" level=info msg="Waiting up to 1h0m0s for the cluster at https://api.lab.karmalabs.com:6443 to initialize..."
     time="2020-05-12T10:17:32Z" level=debug msg="Still waiting for the cluster to initialize: Working towards 4.5.0-0.nightly-2020-05-12-065413: 13% complete"
     time="2020-05-12T10:17:36Z" level=debug msg="Still waiting for the cluster to initialize: Working towards 4.5.0-0.nightly-2020-05-12-065413: 54% complete"
     time="2020-05-12T10:17:51Z" level=debug msg="Still waiting for the cluster to initialize: Working towards 4.5.0-0.nightly-2020-05-12-065413: 55% complete"
@@ -3250,7 +3233,7 @@ Expected Output
     time="2020-05-12T11:13:03Z" level=debug msg="OpenShift console route is created"
     time="2020-05-12T11:13:03Z" level=info msg="Install complete!"
     time="2020-05-12T11:13:03Z" level=info msg="To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/root/ocp/auth/kubeconfig'"
-    time="2020-05-12T11:13:03Z" level=info msg="Access the OpenShift web-console here: https://console-openshift-console.apps.lab.cnftigerteam.com"
+    time="2020-05-12T11:13:03Z" level=info msg="Access the OpenShift web-console here: https://console-openshift-console.apps.lab.karmalabs.com"
     time="2020-05-12T11:13:03Z" level=info msg="Login to the console with user: \"kubeadmin\", and password: \"XXX\""
     time="2020-05-12T11:13:03Z" level=debug msg="Time elapsed per stage:"
     time="2020-05-12T11:13:03Z" level=debug msg="    Infrastructure: 13m35s"
@@ -3272,7 +3255,7 @@ Expected Output
     time="2020-05-12T11:13:03Z" level=debug msg="  Loading Platform..."
     time="2020-05-12T11:13:03Z" level=debug msg="Using Install Config loaded from state file"
     time="2020-05-12T11:13:03Z" level=debug msg="Reusing previously-fetched Install Config"
-    time="2020-05-12T11:13:03Z" level=info msg="Waiting up to 1h0m0s for the cluster at https://api.lab.cnftigerteam.com:6443 to initialize..."
+    time="2020-05-12T11:13:03Z" level=info msg="Waiting up to 1h0m0s for the cluster at https://api.lab.karmalabs.com:6443 to initialize..."
     time="2020-05-12T11:13:03Z" level=debug msg="Cluster is initialized"
     time="2020-05-12T11:13:03Z" level=info msg="Waiting up to 10m0s for the openshift-console route to be created..."
     time="2020-05-12T11:13:03Z" level=debug msg="Route found in openshift-console namespace: console"
@@ -3280,7 +3263,7 @@ Expected Output
     time="2020-05-12T11:13:03Z" level=debug msg="OpenShift console route is created"
     time="2020-05-12T11:13:03Z" level=info msg="Install complete!"
     time="2020-05-12T11:13:03Z" level=info msg="To access the cluster as the system:admin user when using 'oc', run 'export KUBECONFIG=/root/ocp/auth/kubeconfig'"
-    time="2020-05-12T11:13:03Z" level=info msg="Access the OpenShift web-console here: https://console-openshift-console.apps.lab.cnftigerteam.com"
+    time="2020-05-12T11:13:03Z" level=info msg="Access the OpenShift web-console here: https://console-openshift-console.apps.lab.karmalabs.com"
     time="2020-05-12T11:13:03Z" level=info msg="Login to the console with user: \"kubeadmin\", and password: \"XXXX\""
     time="2020-05-12T11:13:03Z" level=info msg="Time elapsed: 0s"
 
@@ -3349,5 +3332,3 @@ Cleaning the lab
 ::
 
     kcli delete plan --yes lab
-    sudo rm -rf /etc/sysconfig/network-scripts/ifcfg-lab-baremetal
-    sudo nmcli conn delete lab-prov
