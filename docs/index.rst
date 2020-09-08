@@ -1,32 +1,22 @@
 Introduction and Prerequisites
 ==============================
 
-This hands on lab guides the user in deploying Openshift using baremetal
-IPI. The goal is to make you understand Baremetal IPI internals and
-workflow so that you can easily make use of it with real Baremetal and
-troubleshoot issues.
+This hands on lab guides the user in deploying Openshift using baremetal IPI. The goal is to make you understand Baremetal IPI internals and workflow so that you can easily make use of it with real Baremetal and troubleshoot issues.
 
-We emulate baremetal by using 3 empty virtual machines used as master
-nodes.
+We emulate baremetal by using 3 empty virtual machines used as master nodes.
 
-An additional vm is used to drive the installation, using a dedicated
-bash script for each part of the workflow.
+An additional vm is used to drive the installation, using a dedicated bash script for each part of the workflow.
 
 General Prerequisites
 ---------------------
 
-The following items are needed in order to be able to complete the lab
-from beginning to end:
+The following items are needed in order to be able to complete the lab from beginning to end:
 
 -  A powerful enough libvirt hypervisor with ssh access.
--  a valid Pull secret from try.openshift.com to keep in a file named
-   ‘openshift_pull.json’
+-  a valid Pull secret from try.openshift.com to keep in a file named ‘openshift_pull.json’
 -  git tool (for cloning the repo only)
 
-**NOTE:** You will need at least 50Gb of RAM in order for openshift to
-actually deploy. If you don’t meet those requirements, you can still run
-through the lab but be warned that the final openshift deployment will
-not succeed.
+**NOTE:** You will need at least 50Gb of RAM in order for openshift to actually deploy. If you don’t meet those requirements, you can still run through the lab but be warned that the final openshift deployment will not succeed.
 
 Preparing the lab
 =================
@@ -48,23 +38,18 @@ Get kcli
 
 We will leverage kcli to easily create the assets needed for the lab.
 
-Install it following instructions
-`here <https://github.com/karmab/kcli#quick-start>`__.
+Install it following instructions `here <https://github.com/karmab/kcli#quick-start>`__.
 
 Copy your public key for root access
 ------------------------------------
 
-**NOTE:** This step is only needed when kcli is running against a local
-hypervisor.
+**NOTE:** This step is only needed when kcli is running against a local hypervisor.
 
-Since the openshift installer will access our hypervisor over ssh from a
-dedicated vm during the lab, we need to copy our public key to root
-using the following:
+Since the openshift installer will access our hypervisor over ssh from a dedicated vm during the lab, we need to copy our public key to root using the following:
 
 ::
 
-    HOMEDIR=/home
-    ME=$(id -nu) ; sudo sh -c "cat $HOME/$ME/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
+    sudo sh -c "cat $HOME/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
 
 Deploy The lab plan
 -------------------
@@ -92,8 +77,7 @@ Expected Output
     lab-master-2 deployed on local
     lab-installer deployed on local
 
-This will deploy 3 empty masters to emulate baremetal along with a
-centos8/rhel8 installer vm where the lab will be run.
+This will deploy 3 empty masters to emulate baremetal along with a centos8/rhel8 installer vm where the lab will be run.
 
 -  Check the created vms
 
@@ -144,38 +128,27 @@ Expected Output
 
     kcli ssh root@lab-installer
 
-**NOTE:** In the remainder of the lab, we assume the user is connected
-(through ssh) to the installer vm in /root directory
+**NOTE:** In the remainder of the lab, we assume the user is connected (through ssh) to the installer vm in /root directory
 
-**NOTE:** In each of the sections, user is encouraged to read the
-corresponding script to get a better understanding of what’s done.
+**NOTE:** In each of the sections, user is encouraged to read the corresponding script to get a better understanding of what’s done.
 
 Explore the environment
 =======================
 
 In the installer vm, Let’s look at the following elements:
 
--  There are several numbered scripts in ``/root`` that we will execute
-   in the next sections.
--  The pull secret was copied in /root/openshift_pull.json\* . Make sure
-   it’s not quoted.
--  Check */root/install-config.yaml* to be used when deploying
-   Openshift:
+-  There are several numbered scripts in ``/root`` that we will execute in the next sections.
+-  The pull secret was copied in /root/openshift_pull.json\* . Make sure it’s not quoted.
+-  Check */root/install-config.yaml* to be used when deploying Openshift:
 
-   -  It contains initial information but we will make it evolve with
-      each section until deploying.
-   -  Check the section containing credential information for your
-      masters and the replicas attribute. We would define information
-      from workers using the same pattern( and specifying worker as
-      *role*)
-   -  Revisit this file at the end of each section to see the
-      modifications done.
+   -  It contains initial information but we will make it evolve with each section until deploying.
+   -  Check the section containing credential information for your masters and the replicas attribute. We would define information from workers using the same pattern( and specifying worker as *role*)
+   -  Revisit this file at the end of each section to see the modifications done.
 
 Virtual Masters preparation
 ===========================
 
-In this section, we install and configure vbmc, which is an utility
-aimed at emulating ipmi when interacting with virtual machines.
+In this section, we install and configure vbmc, which is an utility aimed at emulating ipmi when interacting with virtual machines.
 
 Launch the following command:
 
@@ -429,12 +402,10 @@ This script performs the following tasks:
 
 -  Install libvirt requirements as needed by the installer.
 -  Install virtualbmc and launch vbmcd daemon.
--  Launch an helper script which registers the vms acting as masters in
-   vbmc with default credentials set to jimi/hendrix (Yeah!)
+-  Launch an helper script which registers the vms acting as masters in vbmc with default credentials set to jimi/hendrix (Yeah!)
 -  Patch accordingly install-config.yaml.
 
-After the script is finished, we can verify that our masters are
-actually defined in vbmc with the following command:
+After the script is finished, we can verify that our masters are actually defined in vbmc with the following command:
 
 ::
 
@@ -452,11 +423,9 @@ Expected Output
     | lab-master-2 | running | ::      | 6232 |
     +--------------+---------+---------+------+
 
-Virtual BMC allows us to treat those virtual masters as if they were
-physical nodes at IPMI level.
+Virtual BMC allows us to treat those virtual masters as if they were physical nodes at IPMI level.
 
-For instance, we can check power status of our first master, which we
-associated to port *6230*:
+For instance, we can check power status of our first master, which we associated to port *6230*:
 
 ::
 
@@ -469,8 +438,7 @@ Expected Output
 
     Chassis Power is off
 
-Futhermore, the helper script ``ipmi.py`` can be used to report power
-status of all the nodes defined in *install-config.yaml*
+Futhermore, the helper script ``ipmi.py`` can be used to report power status of all the nodes defined in *install-config.yaml*
 
 ::
 
@@ -487,18 +455,14 @@ Expected Output
     ipmitool -H 192.168.123.234 -U root -P calvin -I lanplus -p 6232 chassis power status
     Chassis Power is off
 
-We will use this same script prior to deploying Openshift to make sure
-all the nodes are powered off prior to launching deployment.
+We will use this same script prior to deploying Openshift to make sure all the nodes are powered off prior to launching deployment.
 
-In a full baremetal setup, virtualbmc wouldn’t be needed but only access
-through IPMI to the nodes of the install. The helper script is still
-usable in this context.
+In a full baremetal setup, virtualbmc wouldn’t be needed but only access through IPMI to the nodes of the install. The helper script is still usable in this context.
 
 Initial installconfig modifications
 ===================================
 
-In this section, we do a basic patching of install-config.yaml to add
-mandatory elements to it:
+In this section, we do a basic patching of install-config.yaml to add mandatory elements to it:
 
 ::
 
@@ -912,18 +876,14 @@ Expected Output
       Running setup.py install for dogpile.cache ... done
     Successfully installed appdirs-1.4.4 debtcollector-2.0.1 decorator-4.4.2 dogpile.cache-0.9.2 iso8601-0.1.12 jmespath-0.9.5 keystoneauth1-4.0.0 msgpack-1.0.0 munch-2.5.0 netaddr-0.7.19 openstacksdk-0.46.0 os-service-types-1.7.0 osc-lib-2.0.0 oslo.config-8.0.2 oslo.i18n-4.0.1 oslo.serialization-3.1.1 oslo.utils-4.1.1 python-cinderclient-7.0.0 python-ironicclient-4.1.0 python-keystoneclient-4.0.0 python-novaclient-17.0.0 python-openstackclient-5.2.0 requestsexceptions-1.4.0 rfc3986-1.4.0 simplejson-3.17.0 wrapt-1.12.1
 
-Beyond typical packages, we also install openstack and ironic client for
-troubleshooting purposes only.
+Beyond typical packages, we also install openstack and ironic client for troubleshooting purposes only.
 
-openstack client is not strictly needed, since ironic is to be seen as
-an implementation detail for the installer, but this can still be
-helpful to check progress of the masters or workers deployment.
+openstack client is not strictly needed, since ironic is to be seen as an implementation detail for the installer, but this can still be helpful to check progress of the masters or workers deployment.
 
 Network requisites
 ==================
 
-In this section, we configure networking with nmcli the same way it
-would be done in the provisioning node by creating appropriate bridges:
+In this section, we configure networking with nmcli the same way it would be done in the provisioning node by creating appropriate bridges:
 
 ::
 
@@ -946,10 +906,7 @@ Expected Output
 Two bridges get created:
 
 -  lab-baremetal on top of the default interface of the node.
--  lab-prov, which is where provisioning of the nodes will be done. No
-   dhcp needs to exist on this bridge, since this is where the
-   provisioning artifacts will be deployed. We configure a static ip in
-   172.22.0.0/24 range.
+-  lab-prov, which is where provisioning of the nodes will be done. No dhcp needs to exist on this bridge, since this is where the provisioning artifacts will be deployed. We configure a static ip in 172.22.0.0/24 range.
 
 Binaries retrieval
 ==================
@@ -972,14 +929,12 @@ The script downloads the following objects:
 
 -  oc
 -  kubectl.
--  openshift-baremetal-install using oc and by specifying which
-   OPENSHIFT_RELEASE_IMAGE to use.
+-  openshift-baremetal-install using oc and by specifying which OPENSHIFT_RELEASE_IMAGE to use.
 
 Images caching
 ==============
 
-In this section, we gather rhcos images needed for the install to speed
-up deployment time:
+In this section, we gather rhcos images needed for the install to speed up deployment time:
 
 ::
 
@@ -1082,24 +1037,17 @@ Expected Output
 This script does the following things:
 
 -  Installs and enables httpd.
--  Evaluates rhcos openstack and qemu urls by gathering
-   openshift-barremetal-install binary commit id and uses github to
-   fetch the relevant data in rhcos.json file.
+-  Evaluates rhcos openstack and qemu urls by gathering openshift-barremetal-install binary commit id and uses github to fetch the relevant data in rhcos.json file.
 -  Fetches those images.
--  Patches *install-config.yaml* so it points to those downloaded
-   images.
--  Prepares a *metal3-config.yaml* based on this data. This is/was only
-   needed for Openshift 4.3.
+-  Patches *install-config.yaml* so it points to those downloaded images.
+-  Prepares a *metal3-config.yaml* based on this data. This is/was only needed for Openshift 4.3.
 
 Disconnected environment (Optional)
 ===================================
 
-In this section, we enable a registry and sync content so we can deploy
-Openshift in a disconnected environment:
+In this section, we enable a registry and sync content so we can deploy Openshift in a disconnected environment:
 
-**NOTE:** In order to make use of this during the install, DNS
-resolution in place is needed to provide resolution for the fqdn of this
-local registry.
+**NOTE:** In order to make use of this during the install, DNS resolution in place is needed to provide resolution for the fqdn of this local registry.
 
 ::
 
@@ -1938,14 +1886,9 @@ This scripts does the following:
 -  Install podman and openssl.
 -  Creates SSL certificates.
 -  Creates a htpasswd file.
--  Creates and launches a registry using tls and said htpasswd for
-   authentication.
--  Leverages ``oc adm release mirror`` to fetch Openshift content and
-   push it to our local registry.
--  Patches the *install-config.yaml* so that it makes use of our
-   internal registry during deployment. In particular,
-   imagecontentsources and ca as additionalTrustBundle are added to the
-   file.
+-  Creates and launches a registry using tls and said htpasswd for authentication.
+-  Leverages ``oc adm release mirror`` to fetch Openshift content and push it to our local registry.
+-  Patches the *install-config.yaml* so that it makes use of our internal registry during deployment. In particular, imagecontentsources and ca as additionalTrustBundle are added to the file.
 
 Openshift deployment
 ====================
@@ -3269,36 +3212,23 @@ Expected Output
 
 This script does the following things:
 
--  Calls the script clean.sh located in /root/bin which removes
-   bootstrap vms which would be left around from a previous failed
-   deployment.
--  Calls the previously mentioned helper script ipmi.py so that it
-   actually stops through IPMI all the nodes declared in our
-   install-config.yaml.
+-  Calls the script clean.sh located in /root/bin which removes bootstrap vms which would be left around from a previous failed deployment.
+-  Calls the previously mentioned helper script ipmi.py so that it actually stops through IPMI all the nodes declared in our install-config.yaml.
 -  Creates ocp directory where install-config.yaml gets copied.
--  Copies any yaml files from the manifests directory into the
-   ocp/openshift one so that one can customize the installation
-   (Generally unsupported/to be used at one own’s risk).
+-  Copies any yaml files from the manifests directory into the ocp/openshift one so that one can customize the installation (Generally unsupported/to be used at one own’s risk).
 -  Launches the install retrying several time to account for timeouts.
--  Waits for all workers defined in the *install-config.yaml* to show
-   up.
+-  Waits for all workers defined in the *install-config.yaml* to show up.
 
 Troubleshooting the deployment
 ------------------------------
 
 During the deployment, you can use typical openshift troubleshooting:
 
-1. Connect to the bootstrap vm with ``virsh list`` and
-   ``virsh console $BOOTSTRAP_VM``
-2. Connect to it using ``ssh core@172.22.0.2`` (Wait for the ironic
-   containers to start for this to work).
-3. Review bootstrap logs using the command showed upon connecting to the
-   bootstrap vm.
+1. Connect to the bootstrap vm with ``virsh list`` and ``virsh console $BOOTSTRAP_VM``
+2. Connect to it using ``ssh core@172.22.0.2`` (Wait for the ironic containers to start for this to work).
+3. Review bootstrap logs using the command showed upon connecting to the bootstrap vm.
 
-Once ironic has started on the bootstrap vm, you can also check with the
-following command the progress of the provisioning of the masters with
-the following (which makes use of the definition found in
-*/root/clouds.yaml*)
+Once ironic has started on the bootstrap vm, you can also check with the following command the progress of the provisioning of the masters with the following (which makes use of the definition found in */root/clouds.yaml*)
 
 ::
 
@@ -3314,8 +3244,7 @@ In this lab, you have accomplished the following activities.
 
 1. Properly prepare a successful Baremetal ipi deployment.
 2. Deploy Openshift!
-3. Understand internal aspects of the workflow and how to troubleshoot
-   issues.
+3. Understand internal aspects of the workflow and how to troubleshoot issues.
 
 Additional resources
 ====================

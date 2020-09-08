@@ -42,8 +42,7 @@ Install it following instructions [here](https://github.com/karmab/kcli#quick-st
 Since the openshift installer will access our hypervisor over ssh from a dedicated vm during the lab, we need to copy our public key to root using the following:
 
 ```
-HOMEDIR=/home
-ME=$(id -nu) ; sudo sh -c "cat $HOME/$ME/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
+sudo sh -c "cat $HOME/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys"
 ```
 
 ## Deploy The lab plan
