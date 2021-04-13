@@ -1904,7 +1904,7 @@ Now, we can finally launch the deployment!!!
 
 ::
 
-    /root/07_deploy_openshift.sh
+    /root/09_deploy_openshift.sh
 
 Expected Output
 
