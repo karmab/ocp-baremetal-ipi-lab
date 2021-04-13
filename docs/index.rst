@@ -40,6 +40,24 @@ We will leverage kcli to easily create the assets needed for the lab.
 
 Install it following instructions `here <https://github.com/karmab/kcli#quick-start>`__.
 
+If it is already installed and you simply want to update it, run:
+
+::
+
+    yum clean all ; yum update kcli
+
+Prepare the system
+------------------
+
+- Make sure that you have an available SSH Keypair under *"~/.ssh/"* (or under *"/root/.ssh/"* if you use "sudo"):
+
+::
+
+    ssh-keygen
+    sudo ssh-keygen
+
+- If you use 'sudo' for the commands below, make sure to use it consistently.
+
 Deploy The lab plan
 -------------------
 
@@ -1886,7 +1904,7 @@ Now, we can finally launch the deployment!!!
 
 ::
 
-    /root/07_deploy_openshift.sh
+    /root/09_deploy_openshift.sh
 
 Expected Output
 
